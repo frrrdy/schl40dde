@@ -315,7 +315,7 @@ button:active { transform: scale(0.98); }
 <body>
 
 <header>
-  <div class="eyebrow">Für die Jungs &mdash; April 2026</div>
+  <div class="eyebrow">Schladde 40er Trip &mdash; April 2026</div>
   <h1>Wo fahren<br>wir <em>hin?</em></h1>
 </header>
 
@@ -326,7 +326,7 @@ button:active { transform: scale(0.98); }
       <div class="progress-track">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <div class="schnaps-counter">🥃 <strong id="schnaps-count">0</strong></div>
+      <div class="schnaps-counter">🥃 Ouzo: <strong id="schnaps-count">0</strong></div>
     </div>
 
     <div class="card">
@@ -337,7 +337,7 @@ button:active { transform: scale(0.98); }
     <input type="text" id="answer-input" placeholder="Deine Antwort..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     <div class="feedback" id="feedback"></div>
     <button id="submit-btn">Antworten</button>
-    <button id="skip-btn">Keine Ahnung &mdash; Schnaps trinken 🥃</button>
+    <button id="skip-btn">Keine Ahnung &mdash; Ouzo trinken 🥃</button>
     <button id="next-btn">Weiter &rarr;</button>
   </div>
 
@@ -447,7 +447,7 @@ function showQuestion() {
   feedback.className = "feedback";
   submitBtn.style.display = "block";
   skipBtn.style.display = "block";
-  skipBtn.textContent = q.joker ? "Ich gebe auf – Schnaps & Auflösung 🥃" : "Keine Ahnung – Schnaps trinken 🥃";
+  skipBtn.textContent = q.joker ? "Ich gebe auf – Ouzo & Auflösung 🥃" : "Keine Ahnung – Ouzo trinken 🥃";
   nextBtn.style.display = "none";
   progressFill.style.width = (current / TOTAL * 100) + "%";
 }
@@ -494,10 +494,10 @@ function handleSubmit() {
   addSchnaps();
   lockInput();
   feedback.className = "feedback wrong";
-  feedback.textContent = "Leider falsch. Tipp: " + questions[current].hint;
+  feedback.textContent = "Leider falsch!";
   feedback.style.display = "block";
   showNextBtn();
-  showOverlay("Falsch geraten – das kostet einen Schnaps.");
+  showOverlay("Falsch geraten – das kostet einen Ouzo.");
 }
 
 skipBtn.onclick = function() {
@@ -505,10 +505,10 @@ skipBtn.onclick = function() {
   lockInput();
   var last = current === questions.length - 1;
   feedback.className = "feedback skipped";
-  feedback.textContent = last ? "Kein Joker mehr! Gleich kommt die Auflösung." : "Tipp: " + questions[current].hint;
+  feedback.textContent = last ? "Kein Joker mehr! Gleich kommt die Auflösung." : "Weiter gehts...";
   feedback.style.display = "block";
   showNextBtn();
-  showOverlay("Keine Ahnung? Einen Schnaps bitte.");
+  showOverlay("Keine Ahnung? Einen Ouzo bitte.");
 };
 
 nextBtn.onclick = function() {
@@ -524,9 +524,9 @@ function showEnd() {
   quizScreen.style.display = "none";
   endScreen.style.display = "block";
   progressFill.style.width = "100%";
-  var msg = schnapps === 0 ? "Kein einziger Schnaps – Wahnsinn!" :
-            schnapps === 1 ? "1 Schnaps getrunken." :
-            schnapps + " Schnäpse getrunken.";
+  var msg = schnapps === 0 ? "Kein einziger Ouzo – Wahnsinn!" :
+            schnapps === 1 ? "1 Ouzo getrunken." :
+            schnapps + " Ouzo getrunken.";
   endStats.innerHTML = "<strong>" + msg + "</strong><br>Auf ein Wochenende in Bergamo! 🖤🔵";
   confetti();
 }
