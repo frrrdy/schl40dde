@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wo fahren wir hin?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #1a7a55;
+  --amber: #c97b1a;
+  --bg: #0d1f17;
+  --bg2: #152b1e;
+  --bg3: #1c3626;
+  --text: #f0ede6;
+  --muted: #8aab96;
+  --border: rgba(255,255,255,0.08);
+  --radius: 16px;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+
+header {
+  width: 100%;
+  text-align: center;
+  padding: 2.5rem 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 7vw, 40px);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+h1 em { color: var(--green); font-style: italic; }
+
+.wrap {
+  width: 100%;
+  max-width: 480px;
+  padding: 0 1.25rem;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.75rem;
+}
+
+.progress-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.schnaps-counter {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.schnaps-counter strong {
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.q-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: rgba(26,122,85,0.15);
+  border: 1px solid rgba(26,122,85,0.25);
+  border-radius: 99px;
+  padding: 3px 10px;
+  margin-bottom: 1rem;
+}
+
+.q-tag.joker {
+  color: var(--amber);
+  background: rgba(201,123,26,0.15);
+  border-color: rgba(201,123,26,0.25);
+}
+
+.q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(17px, 4vw, 21px);
+  line-height: 1.6;
+  color: var(--text);
+}
+
+input[type="text"] {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  padding: 14px 16px;
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 10px;
+}
+
+input[type="text"]::placeholder { color: var(--muted); }
+input[type="text"]:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(26,122,85,0.2);
+}
+input[type="text"]:disabled { opacity: 0.45; }
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 8px;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+button:active { transform: scale(0.98); }
+
+#submit-btn {
+  background: var(--green);
+  color: #fff;
+}
+
+#submit-btn:hover { opacity: 0.88; }
+
+#skip-btn {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+#skip-btn:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+
+#next-btn {
+  background: var(--bg3);
+  color: var(--text);
+  border: 1px solid var(--border);
+  display: none;
+}
+
+#next-btn:hover { background: rgba(255,255,255,0.06); }
+
+.feedback {
+  display: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.feedback.wrong {
+  background: rgba(184,50,50,0.14);
+  border: 1px solid rgba(184,50,50,0.28);
+  color: #e89090;
+}
+
+.feedback.skipped {
+  background: rgba(201,123,26,0.14);
+  border: 1px solid rgba(201,123,26,0.28);
+  color: #d4a96a;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+#overlay.show { display: flex; }
+
+.overlay-box {
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+}
+
+.overlay-icon { font-size: 54px; display: block; margin-bottom: 0.75rem; }
+
+.overlay-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.overlay-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+#overlay-ok {
+  background: var(--amber);
+  color: #fff;
+  margin: 0;
+}
+
+#overlay-ok:hover { opacity: 0.88; }
+
+#end-screen {
+  display: none;
+  text-align: center;
+  padding: 0.5rem 0 2rem;
+}
+
+.end-flag { font-size: 52px; display: block; margin-bottom: 1rem; }
+.end-pre { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+.end-city {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 14vw, 76px);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
+
+.end-stats { font-size: 15px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.7; }
+.end-stats strong { color: var(--text); font-weight: 500; }
+
+.end-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+}
+
+.end-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.end-card p strong { color: var(--text); font-weight: 500; }
+
+.confetti-piece {
+  position: fixed;
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  animation: cfall 3.5s ease-in forwards;
+  z-index: 999;
+}
+
+@keyframes cfall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Für die Jungs &mdash; April 2026</div>
+  <h1>Wo fahren<br>wir <em>hin?</em></h1>
+</header>
+
+<div class="wrap">
+
+  <div id="quiz-screen">
+    <div class="progress-row">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="schnaps-counter">🥃 <strong id="schnaps-count">0</strong></div>
+    </div>
+
+    <div class="card">
+      <div class="q-tag" id="q-tag"></div>
+      <div class="q-text" id="q-text"></div>
+    </div>
+
+    <input type="text" id="answer-input" placeholder="Deine Antwort..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <div class="feedback" id="feedback"></div>
+    <button id="submit-btn">Antworten</button>
+    <button id="skip-btn">Keine Ahnung &mdash; Schnaps trinken 🥃</button>
+    <button id="next-btn">Weiter &rarr;</button>
+  </div>
+
+  <div id="end-screen">
+    <span class="end-flag">🇮🇹</span>
+    <div class="end-pre">Die Antwort war...</div>
+    <div class="end-city">Bergamo</div>
+    <div class="end-stats" id="end-stats"></div>
+    <div class="end-card">
+      <p><strong>Atalanta vs. Juventus</strong><br>Samstag, 11. April 2026 &mdash; 20:45 Uhr<br>New Balance Arena, Bergamo</p>
+    </div>
+  </div>
+
+</div>
+
+<div id="overlay">
+  <div class="overlay-box">
+    <span class="overlay-icon">🥃</span>
+    <div class="overlay-title">Prost!</div>
+    <div class="overlay-sub" id="overlay-sub"></div>
+    <button id="overlay-ok">Getrunken &mdash; weiter!</button>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    text: "Diese Stadt hat ungefähr so viele Einwohner wie Reutlingen oder Bottrop.",
+    hint: "ca. 120.000 Einwohner, Norditalien",
+    joker: false
+  },
+  {
+    text: "Die Stadt besteht aus zwei Teilen – einer Ober- und einer Unterstadt. Ein Teil liegt auf einem Hügel und ist von einer Mauer umgeben, die zum UNESCO-Welterbe gehört. Um von der Unter- in die Oberstadt zu kommen, nimmt man eine historische Standseilbahn.",
+    hint: "Die Standseilbahn heißt Funicolare",
+    joker: false
+  },
+  {
+    text: "Diese Provinz hat mehr EU-zertifizierte Käsesorten als jede andere in diesem Land – und nennt sich deshalb \"Europäische Käsehauptstadt\".",
+    hint: "9 DOP-Käsesorten, darunter Taleggio und Gorgonzola",
+    joker: false
+  },
+  {
+    text: "Die Figur des Arlecchino – besser bekannt als Harlekin aus der Commedia dell'Arte – stammt ursprünglich aus dieser Stadt.",
+    hint: "Norditalien, Lombardei",
+    joker: false
+  },
+  {
+    text: "Der Fußballverein dieser Stadt trägt den Spitznamen \"La Dea\" – die Göttin.",
+    hint: "Atalanta BC",
+    joker: false
+  },
+  {
+    text: "Der aktuelle Trainer von AS Roma war zuvor 8 Jahre lang Trainer in dieser Stadt – und machte den Verein zur europäischen Spitzenmannschaft.",
+    hint: "Gasperini",
+    joker: false
+  },
+  {
+    text: "JOKER: Ihr seid morgen im Stadion. Die Heimmannschaft spielt gegen Juventus. In welcher Stadt seid ihr?",
+    hint: "Alles gesagt.",
+    joker: true
+  }
+];
+
+var current = 0;
+var schnapps = 0;
+var TOTAL = questions.length - 1;
+
+var progressFill = document.getElementById("progress-fill");
+var schnappsCount = document.getElementById("schnaps-count");
+var qTag = document.getElementById("q-tag");
+var qText = document.getElementById("q-text");
+var answerInput = document.getElementById("answer-input");
+var feedback = document.getElementById("feedback");
+var submitBtn = document.getElementById("submit-btn");
+var skipBtn = document.getElementById("skip-btn");
+var nextBtn = document.getElementById("next-btn");
+var overlay = document.getElementById("overlay");
+var overlaySub = document.getElementById("overlay-sub");
+var overlayOk = document.getElementById("overlay-ok");
+var quizScreen = document.getElementById("quiz-screen");
+var endScreen = document.getElementById("end-screen");
+var endStats = document.getElementById("end-stats");
+
+function normalize(s) {
+  return s.trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z]/g, "");
+}
+
+function isCorrect(val) {
+  return normalize(val) === "bergamo";
+}
+
+function showQuestion() {
+  var q = questions[current];
+  if (q.joker) {
+    qTag.textContent = "JOKER";
+    qTag.className = "q-tag joker";
+  } else {
+    qTag.textContent = "Hinweis " + (current + 1) + " von " + TOTAL;
+    qTag.className = "q-tag";
+  }
+  qText.textContent = q.text;
+  answerInput.value = "";
+  answerInput.disabled = false;
+  feedback.style.display = "none";
+  feedback.className = "feedback";
+  submitBtn.style.display = "block";
+  skipBtn.style.display = "block";
+  skipBtn.textContent = q.joker ? "Ich gebe auf – Schnaps & Auflösung 🥃" : "Keine Ahnung – Schnaps trinken 🥃";
+  nextBtn.style.display = "none";
+  progressFill.style.width = (current / TOTAL * 100) + "%";
+}
+
+function lockInput() {
+  answerInput.disabled = true;
+  submitBtn.style.display = "none";
+  skipBtn.style.display = "none";
+}
+
+function showNextBtn() {
+  var last = current === questions.length - 1;
+  nextBtn.textContent = last ? "Auflösung ansehen 🎉" : "Weiter – nächster Hinweis →";
+  nextBtn.style.display = "block";
+}
+
+function addSchnaps() {
+  schnapps++;
+  schnappsCount.textContent = schnapps;
+}
+
+function showOverlay(msg) {
+  overlaySub.textContent = msg;
+  overlay.classList.add("show");
+}
+
+overlayOk.onclick = function() {
+  overlay.classList.remove("show");
+};
+
+submitBtn.onclick = handleSubmit;
+answerInput.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") handleSubmit();
+});
+
+function handleSubmit() {
+  var val = answerInput.value;
+  if (!val.trim()) return;
+  if (isCorrect(val)) {
+    progressFill.style.width = "100%";
+    showEnd();
+    return;
+  }
+  addSchnaps();
+  lockInput();
+  feedback.className = "feedback wrong";
+  feedback.textContent = "Leider falsch. Tipp: " + questions[current].hint;
+  feedback.style.display = "block";
+  showNextBtn();
+  showOverlay("Falsch geraten – das kostet einen Schnaps.");
+}
+
+skipBtn.onclick = function() {
+  addSchnaps();
+  lockInput();
+  var last = current === questions.length - 1;
+  feedback.className = "feedback skipped";
+  feedback.textContent = last ? "Kein Joker mehr! Gleich kommt die Auflösung." : "Tipp: " + questions[current].hint;
+  feedback.style.display = "block";
+  showNextBtn();
+  showOverlay("Keine Ahnung? Einen Schnaps bitte.");
+};
+
+nextBtn.onclick = function() {
+  current++;
+  if (current >= questions.length) {
+    showEnd();
+  } else {
+    showQuestion();
+  }
+};
+
+function showEnd() {
+  quizScreen.style.display = "none";
+  endScreen.style.display = "block";
+  progressFill.style.width = "100%";
+  var msg = schnapps === 0 ? "Kein einziger Schnaps – Wahnsinn!" :
+            schnapps === 1 ? "1 Schnaps getrunken." :
+            schnapps + " Schnäpse getrunken.";
+  endStats.innerHTML = "<strong>" + msg + "</strong><br>Auf ein Wochenende in Bergamo! 🖤🔵";
+  confetti();
+}
+
+function confetti() {
+  var colors = ["#1a7a55","#c97b1a","#b83232","#2a6db5","#8a3a9e","#d4a017","#e07b39"];
+  for (var i = 0; i < 70; i++) {
+    (function() {
+      var el = document.createElement("div");
+      el.className = "confetti-piece";
+      var size = (7 + Math.random() * 6) + "px";
+      el.style.cssText = [
+        "left:" + (Math.random() * 100) + "vw",
+        "top:-15px",
+        "width:" + size,
+        "height:" + size,
+        "background:" + colors[Math.floor(Math.random() * colors.length)],
+        "animation-delay:" + (Math.random() * 2) + "s"
+      ].join(";");
+      document.body.appendChild(el);
+      setTimeout(function() { el.remove(); }, 5500);
+    })();
+  }
+}
+
+showQuestion();
+</script>
+</body>
+</html>
