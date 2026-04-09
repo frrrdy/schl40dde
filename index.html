@@ -310,6 +310,71 @@ button:active { transform: scale(0.98); }
   0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
+
+#restart-btn {
+  background: var(--bg3);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px;
+  width: 100%;
+  cursor: pointer;
+  margin: 1.25rem 0 2rem;
+  transition: background 0.15s;
+}
+#restart-btn:hover { background: rgba(255,255,255,0.06); }
+
+.answers-section { margin-top: 0.5rem; text-align: left; }
+
+.answers-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.answer-card {
+  display: flex;
+  gap: 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.answer-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green);
+  min-width: 24px;
+  padding-top: 1px;
+}
+
+.joker-card { border-color: rgba(201,123,26,0.3); }
+.joker-num { color: var(--amber); }
+
+.answer-body { flex: 1; }
+
+.answer-q {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.answer-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
@@ -349,6 +414,67 @@ button:active { transform: scale(0.98); }
     <div class="end-card">
       <p><strong>Atalanta vs. Juventus</strong><br>Samstag, 11. April 2026 &mdash; 20:45 Uhr<br>New Balance Arena, Bergamo</p>
     </div>
+
+    <button id="restart-btn">Von vorne starten ↺</button>
+
+    <div class="answers-title">Alle Hinweise &amp; Erklärungen</div>
+
+    <div class="answer-card">
+      <div class="answer-num">1</div>
+      <div class="answer-body">
+        <div class="answer-q">Diese Stadt hat ungefähr so viele Einwohner wie Reutlingen oder Bottrop.</div>
+        <div class="answer-text">Bergamo hat ca. 120.000 Einwohner und ist Hauptstadt der gleichnamigen Provinz in der Lombardei.</div>
+      </div>
+    </div>
+
+    <div class="answer-card">
+      <div class="answer-num">2</div>
+      <div class="answer-body">
+        <div class="answer-q">Ober- und Unterstadt, UNESCO-Mauern, Standseilbahn...</div>
+        <div class="answer-text">Die Città Alta liegt auf einem Hügel, umgeben von venezianischen Mauern (UNESCO-Welterbe seit 2017). Die Funicolare verbindet beide Stadtteile.</div>
+      </div>
+    </div>
+
+    <div class="answer-card">
+      <div class="answer-num">3</div>
+      <div class="answer-body">
+        <div class="answer-q">Mehr EU-zertifizierte Käsesorten als jede andere Provinz...</div>
+        <div class="answer-text">Die Provinz Bergamo hat 9 DOP-zertifizierte Käsesorten – mehr als jede andere Provinz Italiens. Darunter Taleggio, Gorgonzola und Formai de Mut.</div>
+      </div>
+    </div>
+
+    <div class="answer-card">
+      <div class="answer-num">4</div>
+      <div class="answer-body">
+        <div class="answer-q">Geburtsort des Arlecchino / Harlekin.</div>
+        <div class="answer-text">Die Figur des Harlekins stammt aus Bergamo und ist bis heute Symbol der Stadt.</div>
+      </div>
+    </div>
+
+    <div class="answer-card">
+      <div class="answer-num">5</div>
+      <div class="answer-body">
+        <div class="answer-q">Fußballverein mit dem Spitznamen "La Dea" – die Göttin.</div>
+        <div class="answer-text">Atalanta BC, gegründet 1907. Unter Gasperini entwickelte sich der Verein zur europäischen Topmannschaft.</div>
+      </div>
+    </div>
+
+    <div class="answer-card">
+      <div class="answer-num">6</div>
+      <div class="answer-body">
+        <div class="answer-q">Der aktuelle AS-Roma-Trainer war 8 Jahre lang hier Trainer.</div>
+        <div class="answer-text">Gian Piero Gasperini trainierte Atalanta von 2016 bis 2025 und wechselte dann zu AS Roma.</div>
+      </div>
+    </div>
+
+    <div class="answer-card joker-card">
+      <div class="answer-num joker-num">J</div>
+      <div class="answer-body">
+        <div class="answer-q">JOKER: Heimspiel gegen Juventus – in welcher Stadt?</div>
+        <div class="answer-text">Atalanta vs. Juventus, 11. April 2026, 20:45 Uhr, New Balance Arena, Bergamo.</div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -551,6 +677,16 @@ function confetti() {
     })();
   }
 }
+
+
+document.getElementById("restart-btn").onclick = function() {
+  current = 0;
+  schnapps = 0;
+  schnappsCount.textContent = "0";
+  endScreen.style.display = "none";
+  quizScreen.style.display = "block";
+  showQuestion();
+};
 
 showQuestion();
 </script>
